@@ -1,7 +1,10 @@
 asgiref==3.8.1
+black==25.1.0
 certifi==2025.6.15
 cffi==1.17.1
 charset-normalizer==3.4.2
+click==8.1.8
+colorama==0.4.6
 cryptography==45.0.4
 defusedxml==0.7.1
 Django==4.2.23
@@ -13,8 +16,11 @@ drf-yasg==1.21.10
 gunicorn==23.0.0
 idna==3.10
 inflection==0.5.1
+mypy_extensions==1.1.0
 oauthlib==3.3.1
 packaging==25.0
+pathspec==0.12.1
+platformdirs==4.3.8
 psycopg2-binary==2.9.3
 pycparser==2.22
 PyJWT==2.9.0
@@ -27,6 +33,7 @@ requests-oauthlib==2.0.0
 social-auth-app-django==5.4.3
 social-auth-core==4.6.1
 sqlparse==0.5.3
+tomli==2.2.1
 typing_extensions==4.14.0
 tzdata==2025.2
 uritemplate==4.2.0
