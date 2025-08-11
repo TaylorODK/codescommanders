@@ -1,0 +1,12 @@
+# Django
+SECRET_KEY='django-insecure-q&@nv(8rp$7hm&!!6hbnd*4hmcwuy356pc$*4=q(2(snfg%rzw'
+ALLOWED_HOSTS=localhost 127.0.0.1 backend
+DEBUG=True
+
+# Database
+POSTGRES_USER=django_user
+POSTGRES_PASSWORD=mysecretpassword
+POSTGRES_DB=django
+DB_HOST=db
+DB_PORT=5432
+DB_ENGINE='django.db.backends.postgresql'
