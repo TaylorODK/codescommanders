@@ -1,3 +1,6 @@
+# Виртуальное окружение
 /venv
 .env
-.sqlite3
+
+# SQLite база данных
+/codescommanders/db.sqlite3
