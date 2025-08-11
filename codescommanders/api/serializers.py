@@ -39,6 +39,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), many=True)
+    slug = serializers.SlugField(read_only=True)
 
     class Meta:
         model = Order
@@ -51,16 +52,25 @@ class OrderSerializer(serializers.ModelSerializer):
             "product"
         )
 
+    def validate(self, data):
+        date_order = data.get("date_order")
+        if date_order and datetime.date.today() > date_order:
+            raise serializers.ValidationError(
+                "Нельзя выбрать дату заказа в прошлом."
+            )
+        return data
+
     def create(self, validated_data):
         request = self.context.get("request")
         products = validated_data.pop("product", [])
-        user = MyUser.objects.get(id=request.user.id)
-        order = Order.objects.create(**validated_data, user=user)
+        order = Order.objects.create(**validated_data, user=request.user)
         order.product.set(products)
         return order
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    """Сериализатор модели продуктов."""
+    slug = serializers.SlugField(read_only=True)
 
     class Meta:
         model = Product
