@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from djoser.serializers import UserSerializer, UserCreateSerializer
 from users.models import MyUser
-from .models import Order
+from .models import Order, Product
 import datetime
 
 
@@ -38,17 +38,35 @@ class OrderSerializer(serializers.ModelSerializer):
     """Сериализатор для модели заказа."""
 
     user = serializers.PrimaryKeyRelatedField(read_only=True)
+    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), many=True)
 
     class Meta:
         model = Order
         fields = (
             "name",
+            "slug",
             "description",
             "user",
+            "date_order",
+            "product"
         )
 
-    def create(self, data):
+    def create(self, validated_data):
         request = self.context.get("request")
+        products = validated_data.pop("product", [])
         user = MyUser.objects.get(id=request.user.id)
-        order = Order.objects.create(**data, user=user)
+        order = Order.objects.create(**validated_data, user=user)
+        order.product.set(products)
         return order
+
+
+class ProductSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Product
+        fields = (
+            "name",
+            "slug",
+            "price",
+            "description"
+        )
