@@ -38,7 +38,9 @@ class OrderSerializer(serializers.ModelSerializer):
     """Сериализатор для модели заказа."""
 
     user = serializers.PrimaryKeyRelatedField(read_only=True)
-    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), many=True)
+    product = serializers.PrimaryKeyRelatedField(
+        queryset=Product.objects.all(), many=True
+    )
     slug = serializers.SlugField(read_only=True)
 
     class Meta:
@@ -49,7 +51,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "description",
             "user",
             "date_order",
-            "product"
+            "product",
         )
 
     def validate(self, data):
@@ -70,13 +72,9 @@ class OrderSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     """Сериализатор модели продуктов."""
+
     slug = serializers.SlugField(read_only=True)
 
     class Meta:
         model = Product
-        fields = (
-            "name",
-            "slug",
-            "price",
-            "description"
-        )
+        fields = ("name", "slug", "price", "description")

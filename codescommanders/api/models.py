@@ -2,11 +2,13 @@ from django.db import models
 from users.models import MyUser
 
 from codescommanders.constants import NAME_MAX_LENGTH
+from django.utils.timezone import now as NOW
+from .mixins import AutoSlugMixin
 
 # Create your models here.
 
 
-class Product(models.Model):
+class Product(AutoSlugMixin, models.Model):
     name = models.CharField(
         max_length=NAME_MAX_LENGTH,
         blank=False,
@@ -14,7 +16,10 @@ class Product(models.Model):
         help_text=f"Максимальная длина наименования {NAME_MAX_LENGTH}",
     )
     slug = models.SlugField(
-        max_length=NAME_MAX_LENGTH, blank=True, verbose_name="Слаг продукта"
+        max_length=NAME_MAX_LENGTH,
+        blank=True,
+        verbose_name="Слаг продукта",
+        help_text="Слаг автоматически генерируется на основании поля name",
     )
     description = models.TextField(
         blank=True, verbose_name="Описание продукта"
@@ -22,6 +27,8 @@ class Product(models.Model):
     price = models.DecimalField(
         blank=False,
         verbose_name="Стоимость продукта",
+        max_digits=7,
+        decimal_places=2,
     )
 
     class Meta:
@@ -29,7 +36,7 @@ class Product(models.Model):
         verbose_name_plural = "Продукты"
 
 
-class Order(models.Model):
+class Order(AutoSlugMixin, models.Model):
     """Модель заказа."""
 
     name = models.CharField(
@@ -39,16 +46,20 @@ class Order(models.Model):
         help_text=f"Максимальная длина наименования {NAME_MAX_LENGTH}",
     )
     slug = models.SlugField(
-        max_length=NAME_MAX_LENGTH, blank=True, verbose_name="Слаг заказа"
+        max_length=NAME_MAX_LENGTH,
+        blank=True,
+        verbose_name="Слаг заказа",
+        help_text="Слаг автоматически генерируется на основании поля name",
     )
     description = models.TextField(blank=True, verbose_name="Описание заказа")
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE, blank=False)
     date_order = models.DateField(
         blank=False,
         verbose_name="Дата заказа",
-        help_text="Укажите дату заказа в формате d.m.Y",
+        help_text="Укажите дату заказа в формате DD.MM.YYYY",
+        default=NOW,
     )
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=False)
+    product = models.ManyToManyField(Product, blank=False, verbose_name="Продукты")
 
     class Meta:
         verbose_name = "Заказ"
