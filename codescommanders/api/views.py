@@ -11,7 +11,6 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     permission_classes = (AuthorPermission,)
     serializer_class = OrderSerializer
-    lookup_field = "slug"
 
 
 class ProductViewSet(viewsets.ModelViewSet):
