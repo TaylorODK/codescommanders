@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "drf_yasg",
     "api.apps.ApiConfig",
     "users.apps.UsersConfig",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -154,6 +155,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 DJOSER = {
@@ -162,10 +164,10 @@ DJOSER = {
     "USER_MODEL": "users.MyUser",
     "HIDE_USERS": False,
     "SERIALIZERS": {
-        "user": "api.serializers.CustomUserSerializer",
-        "current_user": "api.serializers.CustomUserSerializer",
-        "user_detail": "api.serializers.CustomUserSerializer",
-        "user_create": "api.serializers.CustomUserCreateSerializer",
+        "user": "api.serializers.UserSerializer",
+        "current_user": "api.serializers.UserSerializer",
+        "user_detail": "api.serializers.UserSerializer",
+        "user_create": "api.serializers.UserCreateSerializer",
     },
     "PERMISSIONS": {
         "user_create": ["rest_framework.permissions.AllowAny"],
@@ -187,4 +189,11 @@ SWAGGER_SETTINGS = {
         }
     },
     "USE_SESSION_AUTH": False,
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "CodesCommanders API",
+    "DESCRIPTION": "Документация API",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }

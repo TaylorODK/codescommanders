@@ -1,7 +1,7 @@
 from django.db import models
 from users.models import MyUser
 
-from codescommanders.constants import NAME_MAX_LENGTH
+from codescommanders.constants import NAME_MAX_LENGTH, PRICE_DECIMAL_PLACES, PRICE_MAX_DIGITS
 from django.utils.timezone import now as NOW
 from .mixins import AutoSlugMixin
 
@@ -27,8 +27,8 @@ class Product(AutoSlugMixin, models.Model):
     price = models.DecimalField(
         blank=False,
         verbose_name="Стоимость продукта",
-        max_digits=7,
-        decimal_places=2,
+        max_digits=PRICE_MAX_DIGITS,
+        decimal_places=PRICE_DECIMAL_PLACES,
     )
 
     class Meta:
@@ -59,7 +59,7 @@ class Order(AutoSlugMixin, models.Model):
         help_text="Укажите дату заказа в формате DD.MM.YYYY",
         default=NOW,
     )
-    product = models.ManyToManyField(Product, blank=False, verbose_name="Продукты")
+    products = models.ManyToManyField(Product, blank=False, verbose_name="Продукты")
 
     class Meta:
         verbose_name = "Заказ"
